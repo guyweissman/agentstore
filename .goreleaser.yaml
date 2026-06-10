@@ -1,0 +1,67 @@
+# GoReleaser config — builds release binaries and publishes a Homebrew formula.
+# Test locally without publishing:  goreleaser release --snapshot --clean
+# Docs: https://goreleaser.com
+version: 2
+
+project_name: store
+
+before:
+  hooks:
+    - go mod tidy
+
+builds:
+  - id: store
+    main: ./cmd/store
+    binary: store
+    env:
+      # Pure-Go SQLite (modernc.org/sqlite) — no CGO, so cross-compilation is clean.
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - darwin
+    goarch:
+      - amd64
+      - arm64
+    ldflags:
+      - -s -w
+      - -X github.com/guyweissman/agentstore/internal/buildinfo.version={{ .Version }}
+      - -X github.com/guyweissman/agentstore/internal/buildinfo.commit={{ .ShortCommit }}
+      - -X github.com/guyweissman/agentstore/internal/buildinfo.date={{ .Date }}
+
+archives:
+  - id: store
+    formats: [tar.gz]
+    # No version in the filename, so the "latest/download" URL is stable across
+    # releases — lets agents/scripts fetch the newest binary without an API call.
+    name_template: "{{ .ProjectName }}_{{ .Os }}_{{ .Arch }}"
+
+checksum:
+  name_template: "checksums.txt"
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - "^docs:"
+      - "^test:"
+      - "^chore:"
+
+# Publishes a `store` formula to github.com/guyweissman/homebrew-tap.
+# That repo must exist before the first release.
+brews:
+  - name: store
+    directory: Formula
+    repository:
+      owner: guyweissman
+      name: homebrew-tap
+      # PAT with write access to the homebrew-tap repo (the default GITHUB_TOKEN
+      # cannot push to another repo). Set HOMEBREW_TAP_TOKEN in the workflow env.
+      token: "{{ .Env.HOMEBREW_TAP_TOKEN }}"
+    homepage: "https://github.com/guyweissman/agentstore"
+    description: "Portable, file-native datastore for agent knowledge work"
+    license: "MIT"
+    commit_author:
+      name: goreleaser-bot
+      email: goreleaser-bot@users.noreply.github.com
+    test: |
+      system "#{bin}/store", "version"

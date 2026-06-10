@@ -1,0 +1,32 @@
+name: release
+
+# Runs only when a version tag is pushed, e.g.  git tag v0.1.0 && git push origin v0.1.0
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write # needed to create the GitHub Release
+
+jobs:
+  goreleaser:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # full history so the changelog can be generated
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+
+      - uses: goreleaser/goreleaser-action@v6
+        with:
+          version: "~> v2"
+          args: release --clean
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # PAT with write access to the homebrew-tap repo (create as a repo secret).
+          # Until this secret exists, the Homebrew step will fail — see README notes.
+          HOMEBREW_TAP_TOKEN: ${{ secrets.HOMEBREW_TAP_TOKEN }}
