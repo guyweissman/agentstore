@@ -1,0 +1,17 @@
+{
+  "name": "agentstore",
+  "owner": {
+    "name": "Guy Weissman"
+  },
+  "metadata": {
+    "description": "AgentStore plugins for Claude Code."
+  },
+  "plugins": [
+    {
+      "name": "agentstore",
+      "source": "./internal/skill/content",
+      "version": "0.1.0",
+      "description": "Teaches Claude to read, contribute to, and sync shared knowledge in an AgentStore repository — file-native versioning with file-level permissions and live events."
+    }
+  ]
+}

@@ -1,0 +1,148 @@
+---
+name: agentstore
+description: >-
+  Read, contribute to, and stay in sync with shared knowledge in an AgentStore
+  repository — a portable, file-native datastore with versioned history,
+  file-level permissions, and live event streams. Use when working in a directory
+  that contains a {{.StoreDir}}/ folder, when the user mentions AgentStore or a
+  {{.App}} remote, or when running `{{.App}}` commands like push, pull, commit, or watch.
+---
+
+# Working with AgentStore
+
+AgentStore is a shared datastore you reach through the `{{.App}}` command-line tool.
+Think of it as Git with two extra powers: **file-level permissions** (you only see
+and touch what you've been granted) and **live events** (you can watch a path and
+react as others change it). Knowledge lives as files; every change is a commit;
+commits sync to a remote server that enforces access control.
+
+This skill teaches the core loops an agent runs with AgentStore — optionally
+self-hosting a server, then onboarding, reading, contributing, and staying in sync —
+plus the two failure modes that will otherwise trip you up. For exact command syntax
+and every flag, read `reference/cli.md` next to this file — do not guess flags.
+
+## Prerequisite — make sure `{{.App}}` is installed
+
+First check whether it is already available: run `{{.App}} version`. If that prints a
+version, skip ahead. If the command is not found, install it with **one** of the
+options below, then run `{{.App}} version` again to confirm before continuing.
+
+**Preferred — prebuilt binary** (no toolchain; lands on a directory that is on your `PATH`):
+
+```
+OS=$(uname -s | tr A-Z a-z); ARCH=$(uname -m); case $ARCH in x86_64) ARCH=amd64;; aarch64|arm64) ARCH=arm64;; esac
+curl -fsSL "https://github.com/guyweissman/agentstore/releases/latest/download/{{.App}}_${OS}_${ARCH}.tar.gz" | tar -xz -C /usr/local/bin {{.App}} && {{.App}} version
+```
+
+If `/usr/local/bin` is not writable, extract into a directory you can write that is on
+your `PATH` instead (e.g. `mkdir -p ~/.local/bin && export PATH="$PATH:$HOME/.local/bin"`,
+then change the `-C` target to `~/.local/bin`).
+
+**Alternative — `go install`** (only if Go is already installed):
+
+```
+go install github.com/guyweissman/agentstore/cmd/store@latest
+```
+
+This installs to `$(go env GOPATH)/bin` (usually `~/go/bin`). If `{{.App}} version`
+still reports "not found" afterward, that directory is not on your `PATH` — add it with
+`export PATH="$PATH:$(go env GOPATH)/bin"`, then re-check.
+
+If both options fail to download, the binary is likely not published yet (the repo and
+its releases must be public). Report that and stop — do not retry in a loop.
+
+## Mental model
+
+- A **repo** is a local checkout (`{{.StoreDir}}/` holds its state) backed by a **remote** server.
+- You act as a **principal** (an identity) authenticated by an ed25519 key. Every
+  request is signed; there are no passwords or tokens to paste.
+- The server **filters reads by permission**. A short or empty listing is normal,
+  not a bug — it means you have not been granted those paths.
+- Writes are **commit → push**. The server uses optimistic concurrency: if someone
+  else pushed first, your push is rejected and you reconcile (see Loop 4 below).
+
+## Loop 0 — Self-host a server (optional)
+
+If there is no remote yet, run one yourself — most setups start this way. The
+server is a single binary and stores everything under one data directory.
+
+1. Start it (defaults to `127.0.0.1:8080`, data in `~/{{.GlobalDir}}/server-data`):
+   `{{.App}} server start`. It runs in the **foreground and blocks**, so launch it as
+   a background process and confirm it is listening before continuing.
+2. Use `http://127.0.0.1:8080` as the `<url>` in the loops below.
+3. Create your first repo on it: `{{.App}} init <url> [<dir>]` (makes the repo server-side
+   and checks it out locally).
+4. Stop it when done: `{{.App}} server stop`.
+
+Skip this loop entirely if you were given a remote URL — just use that instead.
+
+## Loop 1 — Onboard once (identity)
+
+You need an ed25519 keypair and a registered identity before anything else works.
+Only the public key ever leaves your machine.
+
+1. Generate a key (standard ssh-keygen, no passphrase for automation):
+   `ssh-keygen -t ed25519 -f ~/{{.GlobalDir}}/id -N ""`
+2. Register it on the remote: `{{.App}} register --remote <url> --username <name> --public-key ~/{{.GlobalDir}}/id.pub`
+3. Confirm who the server thinks you are: `{{.App}} whoami`
+
+If you are joining a repo that already exists (or was moved), use `{{.App}} bind`
+instead of `register` to point local config at your existing identity. To rotate a
+key, use `{{.App}} rekey`.
+
+## Loop 2 — Read shared knowledge
+
+1. Get the repo: `{{.App}} clone <url>` (first time) or `{{.App}} pull` (refresh an existing checkout).
+2. Inspect history and content: `{{.App}} log`, `{{.App}} show <commit>`, `{{.App}} diff`.
+3. Retrieve an earlier version of a file or the whole repo: `{{.App}} checkout <commit|seq> <path|.>`.
+
+**Critical:** reads are permission-filtered. If a file or directory you expect is
+missing, the correct conclusion is "I may not have access," not "the data is gone."
+Check `{{.App}} permissions <path>`; if you need access, you must ask a repo admin
+for a grant — you cannot grant yourself.
+
+## Loop 3 — Contribute knowledge
+
+The write cycle is stage → commit → push:
+
+1. `{{.App}} add <path>...` to stage new or changed files (`{{.App}} rm <path>` to stage a deletion).
+2. `{{.App}} status` / `{{.App}} diff --staged` to confirm exactly what you're about to record.
+3. `{{.App}} commit -m "why this change"` — commit messages describe intent, not mechanics.
+4. `{{.App}} push` to publish to the remote.
+
+Stage deliberately and keep commits focused — one logical change each. If you only
+need to undo local, unpushed work, `{{.App}} reset` restores to the last pushed state.
+
+## Loop 4 — Stay in sync and watch
+
+To react to changes from other principals in real time:
+`{{.App}} watch <path>` streams JSON events (one per line) for paths you can read.
+Use it when you need to wait for or respond to another agent's contribution rather
+than polling with repeated pulls.
+
+## Failure playbook A — your push was rejected (conflict)
+
+A rejected push means the remote moved since you last synced (optimistic
+concurrency). Do **not** retry the same push in a loop. Instead:
+
+1. `{{.App}} pull` — fetch the remote commits and merge.
+2. If the merge needs attention, resolve it, then `{{.App}} commit`. To bail out of a
+   half-finished merge, `{{.App}} merge --abort` restores your last committed state.
+3. `{{.App}} push` again.
+
+## Failure playbook B — permission denied
+
+If a read returns nothing it shouldn't, or a write/grant is refused, you've hit the
+access control boundary. You cannot fix this yourself. Report clearly what path and what
+operation was denied so a repo admin (or owner) can `{{.App}} grant` you `read`,
+`write`, or `owner` on that path. Admins manage membership with `{{.App}} principals`
+and the admin role with `{{.App}} admin`.
+
+## Notes for agents
+
+- Prefer JSON output where offered (e.g. `watch` is JSON; `status` and others accept
+  `--json`) so you can parse rather than scrape.
+- Never invent flags or subcommands. The authoritative surface is `reference/cli.md`;
+  when in doubt run `{{.App}} <command> --help`.
+- Setup commands (`register`, `bind`, `rekey`) touch identity and config — run them
+  once and confirm with `{{.App}} whoami` rather than repeating them.

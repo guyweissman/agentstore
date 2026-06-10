@@ -1,0 +1,626 @@
+[
+  {
+    "id": "init",
+    "group": "Store setup",
+    "order": 0,
+    "command": "init",
+    "flag": null,
+    "display": "store init",
+    "args_min": 1,
+    "args_max": 2
+  },
+  {
+    "id": "clone",
+    "group": "Store setup",
+    "order": 1,
+    "command": "clone",
+    "flag": null,
+    "display": "store clone",
+    "args_min": 1,
+    "args_max": 2
+  },
+  {
+    "id": "remote add",
+    "group": "Store setup",
+    "order": 2,
+    "command": "remote add",
+    "flag": null,
+    "display": "store remote add",
+    "args_min": 2,
+    "args_max": 2
+  },
+  {
+    "id": "remote remove",
+    "group": "Store setup",
+    "order": 3,
+    "command": "remote remove",
+    "flag": null,
+    "display": "store remote remove",
+    "args_min": 1,
+    "args_max": 1
+  },
+  {
+    "id": "remote list",
+    "group": "Store setup",
+    "order": 4,
+    "command": "remote list",
+    "flag": null,
+    "display": "store remote list",
+    "args_min": 0,
+    "args_max": 0
+  },
+  {
+    "id": "config",
+    "group": "Store setup",
+    "order": 5,
+    "command": "config",
+    "flag": null,
+    "display": "store config",
+    "args_min": 0,
+    "args_max": 2
+  },
+  {
+    "id": "config --global",
+    "group": "Store setup",
+    "order": 6,
+    "command": "config",
+    "flag": "--global",
+    "display": "store config --global"
+  },
+  {
+    "id": "config --local",
+    "group": "Store setup",
+    "order": 7,
+    "command": "config",
+    "flag": "--local",
+    "display": "store config --local"
+  },
+  {
+    "id": "config --list",
+    "group": "Store setup",
+    "order": 8,
+    "command": "config",
+    "flag": "--list",
+    "display": "store config --list"
+  },
+  {
+    "id": "add",
+    "group": "File operations",
+    "order": 9,
+    "command": "add",
+    "flag": null,
+    "display": "store add",
+    "args_min": 1,
+    "args_max": -1
+  },
+  {
+    "id": "rm",
+    "group": "File operations",
+    "order": 10,
+    "command": "rm",
+    "flag": null,
+    "display": "store rm",
+    "args_min": 1,
+    "args_max": 1
+  },
+  {
+    "id": "status",
+    "group": "File operations",
+    "order": 11,
+    "command": "status",
+    "flag": null,
+    "display": "store status",
+    "args_min": 0,
+    "args_max": 0
+  },
+  {
+    "id": "diff",
+    "group": "File operations",
+    "order": 12,
+    "command": "diff",
+    "flag": null,
+    "display": "store diff",
+    "args_min": 0,
+    "args_max": 1
+  },
+  {
+    "id": "diff --staged",
+    "group": "File operations",
+    "order": 13,
+    "command": "diff",
+    "flag": "--staged",
+    "display": "store diff --staged"
+  },
+  {
+    "id": "commit",
+    "group": "Committing and syncing",
+    "order": 14,
+    "command": "commit",
+    "flag": null,
+    "display": "store commit",
+    "args_min": 0,
+    "args_max": -1
+  },
+  {
+    "id": "commit --message",
+    "group": "Committing and syncing",
+    "order": 15,
+    "command": "commit",
+    "flag": "--message",
+    "display": "store commit --message"
+  },
+  {
+    "id": "push",
+    "group": "Committing and syncing",
+    "order": 16,
+    "command": "push",
+    "flag": null,
+    "display": "store push",
+    "args_min": 0,
+    "args_max": 1
+  },
+  {
+    "id": "push --remote",
+    "group": "Committing and syncing",
+    "order": 17,
+    "command": "push",
+    "flag": "--remote",
+    "display": "store push --remote"
+  },
+  {
+    "id": "push --mirror",
+    "group": "Committing and syncing",
+    "order": 18,
+    "command": "push",
+    "flag": "--mirror",
+    "display": "store push --mirror"
+  },
+  {
+    "id": "pull",
+    "group": "Committing and syncing",
+    "order": 19,
+    "command": "pull",
+    "flag": null,
+    "display": "store pull",
+    "args_min": 0,
+    "args_max": 1
+  },
+  {
+    "id": "pull --remote",
+    "group": "Committing and syncing",
+    "order": 20,
+    "command": "pull",
+    "flag": "--remote",
+    "display": "store pull --remote"
+  },
+  {
+    "id": "merge",
+    "group": "Committing and syncing",
+    "order": 21,
+    "command": "merge",
+    "flag": null,
+    "display": "store merge",
+    "args_min": 0,
+    "args_max": -1
+  },
+  {
+    "id": "merge --abort",
+    "group": "Committing and syncing",
+    "order": 22,
+    "command": "merge",
+    "flag": "--abort",
+    "display": "store merge --abort"
+  },
+  {
+    "id": "reset",
+    "group": "Committing and syncing",
+    "order": 23,
+    "command": "reset",
+    "flag": null,
+    "display": "store reset",
+    "args_min": 0,
+    "args_max": 0
+  },
+  {
+    "id": "log",
+    "group": "History and versions",
+    "order": 24,
+    "command": "log",
+    "flag": null,
+    "display": "store log",
+    "args_min": 0,
+    "args_max": 1
+  },
+  {
+    "id": "log --number",
+    "group": "History and versions",
+    "order": 25,
+    "command": "log",
+    "flag": "--number",
+    "display": "store log --number"
+  },
+  {
+    "id": "log --author",
+    "group": "History and versions",
+    "order": 26,
+    "command": "log",
+    "flag": "--author",
+    "display": "store log --author"
+  },
+  {
+    "id": "log --since",
+    "group": "History and versions",
+    "order": 27,
+    "command": "log",
+    "flag": "--since",
+    "display": "store log --since"
+  },
+  {
+    "id": "log --to",
+    "group": "History and versions",
+    "order": 28,
+    "command": "log",
+    "flag": "--to",
+    "display": "store log --to"
+  },
+  {
+    "id": "log --cursor",
+    "group": "History and versions",
+    "order": 29,
+    "command": "log",
+    "flag": "--cursor",
+    "display": "store log --cursor"
+  },
+  {
+    "id": "log --to-cursor",
+    "group": "History and versions",
+    "order": 30,
+    "command": "log",
+    "flag": "--to-cursor",
+    "display": "store log --to-cursor"
+  },
+  {
+    "id": "log --reverse",
+    "group": "History and versions",
+    "order": 31,
+    "command": "log",
+    "flag": "--reverse",
+    "display": "store log --reverse"
+  },
+  {
+    "id": "log --json",
+    "group": "History and versions",
+    "order": 32,
+    "command": "log",
+    "flag": "--json",
+    "display": "store log --json"
+  },
+  {
+    "id": "show",
+    "group": "History and versions",
+    "order": 33,
+    "command": "show",
+    "flag": null,
+    "display": "store show",
+    "args_min": 1,
+    "args_max": 1
+  },
+  {
+    "id": "checkout",
+    "group": "History and versions",
+    "order": 34,
+    "command": "checkout",
+    "flag": null,
+    "display": "store checkout",
+    "args_min": 2,
+    "args_max": 2
+  },
+  {
+    "id": "grant",
+    "group": "Permissions",
+    "order": 35,
+    "command": "grant",
+    "flag": null,
+    "display": "store grant",
+    "args_min": 3,
+    "args_max": 3
+  },
+  {
+    "id": "revoke",
+    "group": "Permissions",
+    "order": 36,
+    "command": "revoke",
+    "flag": null,
+    "display": "store revoke",
+    "args_min": 2,
+    "args_max": 2
+  },
+  {
+    "id": "permissions",
+    "group": "Permissions",
+    "order": 37,
+    "command": "permissions",
+    "flag": null,
+    "display": "store permissions",
+    "args_min": 1,
+    "args_max": 1
+  },
+  {
+    "id": "watch",
+    "group": "Real-time events",
+    "order": 38,
+    "command": "watch",
+    "flag": null,
+    "display": "store watch",
+    "args_min": 0,
+    "args_max": 1
+  },
+  {
+    "id": "watch --events",
+    "group": "Real-time events",
+    "order": 39,
+    "command": "watch",
+    "flag": "--events",
+    "display": "store watch --events"
+  },
+  {
+    "id": "watch --cursor",
+    "group": "Real-time events",
+    "order": 40,
+    "command": "watch",
+    "flag": "--cursor",
+    "display": "store watch --cursor"
+  },
+  {
+    "id": "register",
+    "group": "Identity",
+    "order": 41,
+    "command": "register",
+    "flag": null,
+    "display": "store register",
+    "args_min": 0,
+    "args_max": -1
+  },
+  {
+    "id": "register --remote",
+    "group": "Identity",
+    "order": 42,
+    "command": "register",
+    "flag": "--remote",
+    "display": "store register --remote"
+  },
+  {
+    "id": "register --username",
+    "group": "Identity",
+    "order": 43,
+    "command": "register",
+    "flag": "--username",
+    "display": "store register --username"
+  },
+  {
+    "id": "register --public-key",
+    "group": "Identity",
+    "order": 44,
+    "command": "register",
+    "flag": "--public-key",
+    "display": "store register --public-key"
+  },
+  {
+    "id": "bind",
+    "group": "Identity",
+    "order": 45,
+    "command": "bind",
+    "flag": null,
+    "display": "store bind",
+    "args_min": 0,
+    "args_max": -1
+  },
+  {
+    "id": "bind --remote",
+    "group": "Identity",
+    "order": 46,
+    "command": "bind",
+    "flag": "--remote",
+    "display": "store bind --remote"
+  },
+  {
+    "id": "bind --username",
+    "group": "Identity",
+    "order": 47,
+    "command": "bind",
+    "flag": "--username",
+    "display": "store bind --username"
+  },
+  {
+    "id": "bind --public-key",
+    "group": "Identity",
+    "order": 48,
+    "command": "bind",
+    "flag": "--public-key",
+    "display": "store bind --public-key"
+  },
+  {
+    "id": "whoami",
+    "group": "Identity",
+    "order": 49,
+    "command": "whoami",
+    "flag": null,
+    "display": "store whoami",
+    "args_min": 0,
+    "args_max": -1
+  },
+  {
+    "id": "whoami --remote",
+    "group": "Identity",
+    "order": 50,
+    "command": "whoami",
+    "flag": "--remote",
+    "display": "store whoami --remote"
+  },
+  {
+    "id": "rekey",
+    "group": "Identity",
+    "order": 51,
+    "command": "rekey",
+    "flag": null,
+    "display": "store rekey",
+    "args_min": 0,
+    "args_max": -1
+  },
+  {
+    "id": "rekey --remote",
+    "group": "Identity",
+    "order": 52,
+    "command": "rekey",
+    "flag": "--remote",
+    "display": "store rekey --remote"
+  },
+  {
+    "id": "rekey --public-key",
+    "group": "Identity",
+    "order": 53,
+    "command": "rekey",
+    "flag": "--public-key",
+    "display": "store rekey --public-key"
+  },
+  {
+    "id": "principals list --remote",
+    "group": "Identity",
+    "order": 54,
+    "command": "principals list",
+    "flag": "--remote",
+    "display": "store principals list --remote"
+  },
+  {
+    "id": "principals add",
+    "group": "Membership",
+    "order": 55,
+    "command": "principals add",
+    "flag": null,
+    "display": "store principals add",
+    "args_min": 1,
+    "args_max": 1
+  },
+  {
+    "id": "principals list",
+    "group": "Membership",
+    "order": 56,
+    "command": "principals list",
+    "flag": null,
+    "display": "store principals list",
+    "args_min": 0,
+    "args_max": 0
+  },
+  {
+    "id": "principals remove",
+    "group": "Membership",
+    "order": 57,
+    "command": "principals remove",
+    "flag": null,
+    "display": "store principals remove",
+    "args_min": 1,
+    "args_max": 1
+  },
+  {
+    "id": "admin add",
+    "group": "Admin role",
+    "order": 58,
+    "command": "admin add",
+    "flag": null,
+    "display": "store admin add",
+    "args_min": 1,
+    "args_max": 1
+  },
+  {
+    "id": "admin list",
+    "group": "Admin role",
+    "order": 59,
+    "command": "admin list",
+    "flag": null,
+    "display": "store admin list",
+    "args_min": 0,
+    "args_max": 0
+  },
+  {
+    "id": "admin revoke",
+    "group": "Admin role",
+    "order": 60,
+    "command": "admin revoke",
+    "flag": null,
+    "display": "store admin revoke",
+    "args_min": 1,
+    "args_max": 1
+  },
+  {
+    "id": "server start",
+    "group": "Server",
+    "order": 61,
+    "command": "server start",
+    "flag": null,
+    "display": "store server start",
+    "args_min": 0,
+    "args_max": -1
+  },
+  {
+    "id": "server start --addr",
+    "group": "Server",
+    "order": 62,
+    "command": "server start",
+    "flag": "--addr",
+    "display": "store server start --addr"
+  },
+  {
+    "id": "server start --data-dir",
+    "group": "Server",
+    "order": 63,
+    "command": "server start",
+    "flag": "--data-dir",
+    "display": "store server start --data-dir"
+  },
+  {
+    "id": "server stop",
+    "group": "Server",
+    "order": 64,
+    "command": "server stop",
+    "flag": null,
+    "display": "store server stop",
+    "args_min": 0,
+    "args_max": -1
+  },
+  {
+    "id": "server stop --data-dir",
+    "group": "Server",
+    "order": 65,
+    "command": "server stop",
+    "flag": "--data-dir",
+    "display": "store server stop --data-dir"
+  },
+  {
+    "id": "skill export",
+    "group": "Agent skill",
+    "order": 66,
+    "command": "skill export",
+    "flag": null,
+    "display": "store skill export",
+    "args_min": 0,
+    "args_max": 1
+  },
+  {
+    "id": "skill export --stdout",
+    "group": "Agent skill",
+    "order": 67,
+    "command": "skill export",
+    "flag": "--stdout",
+    "display": "store skill export --stdout"
+  },
+  {
+    "id": "version",
+    "group": "Meta",
+    "order": 68,
+    "command": "version",
+    "flag": null,
+    "display": "store version",
+    "args_min": 0,
+    "args_max": 0
+  }
+]

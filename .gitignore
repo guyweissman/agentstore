@@ -1,0 +1,23 @@
+# Compiled binary (built from source via `go build ./cmd/store`)
+/store
+/store.exe
+
+# Release artifacts
+/dist/
+
+# Test / coverage output
+*.test
+*.out
+coverage.txt
+
+# Local SQLite databases
+*.db
+*.db-shm
+*.db-wal
+
+# OS / editor cruft
+.DS_Store
+
+# Coverage demo: sandbox state, build output, event stream
+# (the React viewer lives in the agentstore-demo repo)
+/coverage-demo/.run/
