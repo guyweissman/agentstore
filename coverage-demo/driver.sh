@@ -54,6 +54,12 @@ section_skill() {
 }
 
 # ---------------------------------------------------------------------------
+section_meta() {
+  say "Meta — version (no server or repo needed)"
+  step human "$RUN_DIR" "version" -- version
+}
+
+# ---------------------------------------------------------------------------
 section_setup() {
   say "Store setup — init, seed, members, grants, remotes"
   H="$(home human)"; REPO="$H/$REPO_NAME"
@@ -317,6 +323,7 @@ section_server_stop() {
 main() {
   section_bootstrap
   section_skill
+  section_meta
   section_setup
   section_config
   section_fileops
